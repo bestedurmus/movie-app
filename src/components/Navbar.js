@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const logOut = async () => {
       await signOut(auth)
-      navigate("/")
+      navigate("/login")
 
   }
 
@@ -35,17 +35,18 @@ const Navbar = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 0 }}
+            onClick={() => navigate("/")}
           >
             Movie App
           </IconButton>
           <Box>
             {currentUser ? (
-              <Button color="inherit">user</Button>
+              <Button color="inherit">{currentUser.displayName}</Button>
             ) : (
               <Button onClick={() => navigate("/login")} color="inherit">login</Button>
             )}
             {currentUser ? (
-              <Button onClick={() => logOut} color="inherit">logout</Button>
+              <Button onClick={() => logOut()} color="inherit">logout</Button>
             ) : (
               <Button onClick={() => navigate("/register")} color="inherit">register</Button>
             )}
