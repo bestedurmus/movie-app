@@ -1,5 +1,6 @@
 import { Container, Grid, Input } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import MovieCard from '../components/MovieCard'
 import { AuthContext } from '../context/AuthContext'
 
@@ -10,6 +11,7 @@ const Home = () => {
   const [movies, setMovies] = useState([])
   const [searchMovie, setSearchMovie] = useState('')
   const { currentUser } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     getMovies(FEATURED_API)
@@ -24,12 +26,15 @@ const Home = () => {
     
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     if(currentUser && searchMovie){
       getMovies(SEARCH_API + searchMovie)
     }else{
       alert("Please log in to search a movie")
+      navigate("/login")
     }
+    setSearchMovie("")
   }
 
 
@@ -38,8 +43,8 @@ const Home = () => {
   return (
     <div>
       <Grid container>
-        <form style={{width:"100%", display:"flex"}} onSubmit={() => handleSubmit()}>
-          <Input onChange={(e) => setSearchMovie(e.target.value)} value={searchMovie} placeholder="Search a movie " type='search' sx={{margin:"1rem auto", width:"50%"}}/>
+        <form style={{width:"100%", display:"flex"}} onSubmit={handleSubmit}>
+          <Input onChange={(e) => setSearchMovie(e.target.value)} value={searchMovie} placeholder="Search a movie " type='search' variant="filled" sx={{margin:"1rem auto", width:"50%"}}/>
         </form>
       </Grid>
 
